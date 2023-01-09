@@ -14,18 +14,6 @@ class DBLoadAndroid {
   }) async {
     Database? db;
 
-    try {
-      db = await databaseFactoryFfi.openDatabase(
-        path,
-        options: options,
-      );
-    } catch (e) {
-      print(e.toString());
-      databaseFactoryFfi.deleteDatabase(path);
-    }
-    print("ANDROID");
-    print("VERSION: ${sqlite3.sqlite3.version}");
-
     final library = _openExtension();
     final extension = sqlite3.SqliteExtension.inLibrary(
         library, 'sqlite3_sqlitearabictokenizer_init');
@@ -38,7 +26,18 @@ class DBLoadAndroid {
       print("Error ${e.toString()}");
     }
     print("SQLITE EXTENSION ${library.toString()} ${library.handle}");
-    await Future.delayed(Duration(milliseconds: 50));
+
+    try {
+      db = await databaseFactoryFfi.openDatabase(
+        path,
+        options: options,
+      );
+    } catch (e) {
+      print(e.toString());
+      databaseFactoryFfi.deleteDatabase(path);
+    }
+    print("ANDROID");
+    print("VERSION: ${sqlite3.sqlite3.version}");
     return db;
   }
 

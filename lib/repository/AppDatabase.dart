@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tokenizer_flutter_demo/model/Verse.dart';
 import 'package:tokenizer_flutter_demo/repository/DBLoadWindows.dart';
 
 import '../util/FileUtil.dart';
@@ -66,7 +67,6 @@ class AppDatabase {
               readOnly: readOnly,
               onConfigure: (db) async {},
             ));
-        // db = await openDatabase(path, version: version, readOnly: readOnly);
       } else if (Platform.isIOS || Platform.isMacOS) {
         db = await DBLoadiOSAndmacOS.getDatabase(path,
             options: OpenDatabaseOptions(
@@ -176,10 +176,20 @@ class AppDatabase {
 
   Future<void> testTokenizer() async {
     Database? db = await (database);
-    await Future.delayed(Duration(seconds: 2));
-    List<Map> maps =
-        await db.rawQuery("SELECT * FROM verses where text MATCH ?", ["الحمد"]);
+    final maps = await db
+        .rawQuery("SELECT rowid, * FROM verses where text MATCH ?", ["الحمد"]);
     print("testTokenizer ${maps.length}");
-    maps.forEach((element) => print(element["text"]));
+    final verses = maps.map(Verse.fromJson).toList();
+    verses.forEach((element) => print(element));
+  }
+
+  Future<List<Verse>> search(String key) async {
+    Database? db = await (database);
+    final maps = await db
+        .rawQuery("SELECT rowid, * FROM verses where text MATCH ?", [key]);
+    print("search ${key} ${maps.length}");
+    final verses = maps.map(Verse.fromJson).toList();
+    verses.forEach((element) => print(element));
+    return verses;
   }
 }

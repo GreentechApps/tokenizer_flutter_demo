@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tokenizer_flutter_demo/provider/AppProvider.dart';
@@ -47,6 +49,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late TextEditingController _textEditingController;
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -64,22 +67,70 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(
+                20,
+              ),
+              child: TextField(
+                controller: _textEditingController,
+                decoration: InputDecoration(
+                  hintText: "Search arabic with or without diacritics",
+                  hintStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.amber),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.black),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(width: 1, color: Colors.red),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                onChanged: _onChanged,
+                onSubmitted: (v) {
+                  Provider.of<AppProvider>(context, listen: false)
+                      .search(v.trim());
+                },
+              ),
+            ),
             Expanded(
-                child: TextField(
-              controller: _textEditingController,
-              onSubmitted: (v) {
-                print("Hello $v");
-              },
-            )),
+              child: ListView.builder(
+                padding: EdgeInsets.all(20),
+                itemCount: Provider.of<AppProvider>(context).verses.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      Provider.of<AppProvider>(context).verses[index].toString(),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
+  void _onChanged(String query) {
+    if (_debounce?.isActive ?? false) {
+      _debounce?.cancel();
+    }
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      Provider.of<AppProvider>(context, listen: false).search(query.trim());
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
+    _debounce?.cancel();
     _textEditingController.dispose();
   }
 }

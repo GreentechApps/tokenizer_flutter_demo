@@ -12,16 +12,6 @@ class DBLoadiOSAndmacOS {
   }) async {
     Database? db;
 
-    try {
-      db = await databaseFactoryFfi.openDatabase(
-        path,
-        options: options,
-      );
-    } catch (e) {
-      print(e.toString());
-      databaseFactoryFfi.deleteDatabase(path);
-    }
-    print("VERSION: ${sqlite3.sqlite3.version}");
     final library = _openExtension();
     if (library != null) {
       final ext = sqlite3.SqliteExtension.inLibrary(
@@ -37,6 +27,16 @@ class DBLoadiOSAndmacOS {
       print("SQLITE EXTENSION ${library.toString()} ${library.handle}");
     }
 
+    try {
+      db = await databaseFactoryFfi.openDatabase(
+        path,
+        options: options,
+      );
+    } catch (e) {
+      print(e.toString());
+      databaseFactoryFfi.deleteDatabase(path);
+    }
+    print("VERSION: ${sqlite3.sqlite3.version}");
     return db;
   }
 

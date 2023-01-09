@@ -1,11 +1,12 @@
 import 'dart:ffi';
 import 'dart:io';
-import 'package:path/path.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:sqlite3/sqlite3.dart' as sqlite3;
+import 'package:path/path.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3/open.dart';
+import 'package:sqlite3/sqlite3.dart' as sqlite3;
 
 class DBLoadWindows {
   static _setDlls() {
@@ -42,14 +43,6 @@ class DBLoadWindows {
   }) async {
     _setDlls();
 
-    // Check if the database exists
-    //final bool exists = await File(path).exists();
-
-   // if (!exists) {
-   //   print("Database `$path` doesn't exists");
-   //   return null;
-  //  }
-
     Database? db;
 
     final String lpath;
@@ -62,8 +55,8 @@ class DBLoadWindows {
           'sqlite3-arabic-tokenizer.dll'));
     }
     final library = DynamicLibrary.open(lpath);
-    sqlite3.sqlite3.ensureExtensionLoaded(
-        sqlite3.SqliteExtension.inLibrary(library, 'sqlite3_sqlitearabictokenizer_init'));
+    sqlite3.sqlite3.ensureExtensionLoaded(sqlite3.SqliteExtension.inLibrary(
+        library, 'sqlite3_sqlitearabictokenizer_init'));
     print("LIB ${library.toString()}");
 
     try {
