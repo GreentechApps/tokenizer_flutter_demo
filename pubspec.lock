@@ -305,8 +305,8 @@ packages:
     dependency: "direct overridden"
     description:
       path: sqlite3
-      ref: tokenizer-support
-      resolved-ref: d09ccf5dc32de55ea30d6c9c987345264f6ee4b8
+      ref: "0.0.1"
+      resolved-ref: "59e31462ce29221be92fdbbe2e5eaabb06ed75db"
       url: "https://github.com/SNNafi/sqlite3.dart"
     source: git
     version: "1.9.2"
@@ -314,8 +314,8 @@ packages:
     dependency: "direct main"
     description:
       path: sqlite3_flutter_libs
-      ref: tokenizer-support
-      resolved-ref: d09ccf5dc32de55ea30d6c9c987345264f6ee4b8
+      ref: "0.0.1"
+      resolved-ref: "59e31462ce29221be92fdbbe2e5eaabb06ed75db"
       url: "https://github.com/SNNafi/sqlite3.dart"
     source: git
     version: "0.5.11"

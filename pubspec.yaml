@@ -41,7 +41,7 @@ dependencies:
   sqlite3_flutter_libs:
     git:
       url: https://github.com/SNNafi/sqlite3.dart
-      ref: tokenizer-support
+      ref: 0.0.1
       path: sqlite3_flutter_libs/
   path_provider: ^2.0.10
   provider: ^6.0.2
@@ -77,5 +77,5 @@ dependency_overrides:
   sqlite3:
     git:
       url: https://github.com/SNNafi/sqlite3.dart
-      ref: tokenizer-support
+      ref: 0.0.1
       path: sqlite3/

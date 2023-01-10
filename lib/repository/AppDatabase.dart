@@ -11,7 +11,7 @@ import 'package:tokenizer_flutter_demo/repository/DBLoadWindows.dart';
 import '../util/FileUtil.dart';
 import 'DBLoadAndroid.dart';
 import 'DBLoadiOSAndmacOS.dart';
-import 'LocalRepositoryLinux.dart';
+import 'DBLoadLinux.dart';
 
 const _databaseName = "quran.db";
 const databaseVersion = 7;
@@ -84,7 +84,7 @@ class AppDatabase {
               },
             ));
       } else if (Platform.isLinux) {
-        db = await LocalRepositoryLinux.getDatabase(
+        db = await DBLoadLinux.getDatabase(
           path,
           version: version,
           readOnly: readOnly,
